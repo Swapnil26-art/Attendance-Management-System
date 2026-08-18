@@ -162,7 +162,7 @@ git push -u origin main
 JWT authentication · Pagination · Search & filtering · Sorting · Responsive UI · Role-based access · Swagger/OpenAPI docs · CSV export · Vercel (cloud) deployment · Normalized schema with FKs/constraints/audit fields.
 
 ## 📷 Screenshots
-Add your screenshots here (Login, Dashboard, Employees, Add/Edit Employee, Attendance, Export CSV).
+
 
 ---
 Built for assessment with React + Express + MySQL, deployable to Vercel on the free tier.
