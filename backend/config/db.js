@@ -1,4 +1,10 @@
+const path = require('path');
+const dotenv = require('dotenv');
 const mysql = require('mysql2/promise');
+
+// Load backend/.env when present (local dev). No-op/missing on Vercel, where
+// environment variables come from the project settings instead.
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 // SSL is required for cloud MySQL (e.g. TiDB Cloud / AWS RDS).
 // Set DB_SSL=true in .env for cloud databases, or DB_SSL=false for local MySQL.

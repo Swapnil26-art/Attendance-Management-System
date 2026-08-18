@@ -4,7 +4,7 @@
  * Creates tables and seeds initial data (admin user + departments)
  */
 
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
 

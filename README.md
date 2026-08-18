@@ -31,9 +31,9 @@ attendance-management-system/
 ├── vercel.json               # Single-project Vercel config (frontend + API)
 ├── package.json              # Root: backend deps + convenience scripts
 ├── .env.example              # Environment template
-├── backend/                  # Express REST API
+├── backend/                  # Express REST API (code only; deps live in root)
 │   ├── app.js                # Express app (exported, no listen)
-│   ├── server.js             # Local dev server (listen) — run via npm start
+│   ├── server.js             # Local dev server (listen) — run via npm run dev:server
 │   ├── config/db.js          # MySQL connection pool
 │   ├── middleware/           # JWT auth + role guard + error handler
 │   ├── controllers/          # auth, employee, attendance, dashboard, department
@@ -61,7 +61,7 @@ attendance-management-system/
 ### 2. Database & Backend
 
 ```bash
-# install all dependencies (root + backend + frontend)
+# install all dependencies (root Node deps + frontend)
 npm run install:all
 
 # configure backend environment
@@ -141,7 +141,7 @@ git push -u origin main
 
 ### Step 3 — Import into Vercel
 1. Go to https://vercel.com/new and **Import** your GitHub repository.
-2. Vercel auto-detects the `vercel.json` build (client build + serverless API). If prompted keep the default **Root Directory** as the repo root.
+2. **Important:** choose the **single-project** option — keep **Root Directory** `./` and do **NOT** use the "Services" multi-app preset. (This repo has only one `package.json` per app and routes the API through the root `api/` serverless function, so it deploys as one project using the root `vercel.json`.)
 3. Under **Settings → Environment Variables** add:
    - `DB_HOST` (e.g. `<cluster>.aws.tidbcloud.com`)
    - `DB_PORT` = `4000`
