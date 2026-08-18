@@ -42,7 +42,7 @@ attendance-management-system/
 │   ├── database/seed.js      # Creates DB/tables + seeds admin & departments
 │   ├── utils/swagger.js      # Swagger spec
 │   └── .env.example
-└── client/                   # React (Vite) frontend
+└── frontend/                 # React (Vite) frontend
     ├── vite.config.js        # Vite + Tailwind + dev proxy (/api → :5000)
     └── src/
         ├── api/              # Axios instance + service modules
@@ -82,8 +82,8 @@ npm run dev:server
 ### 3. Frontend
 
 ```bash
-# in client/ — or leave VITE_API_URL empty (dev uses the Vite proxy)
-npm --prefix client run dev
+# in frontend/ — or leave VITE_API_URL empty (dev uses the Vite proxy)
+npm --prefix frontend run dev
 # open http://localhost:5173
 ```
 
@@ -156,7 +156,7 @@ git push -u origin main
 
 ### How the Vercel routing works (`vercel.json`)
 - `/api/*` → `api/index.js` (Express serverless function)
-- everything else → static Vite build (`client/dist`), with SPA fallback to `index.html`.
+- everything else → static Vite build (`frontend/dist`), with SPA fallback to `index.html`.
 
 ## ✅ Bonus Features Covered
 JWT authentication · Pagination · Search & filtering · Sorting · Responsive UI · Role-based access · Swagger/OpenAPI docs · CSV export · Vercel (cloud) deployment · Normalized schema with FKs/constraints/audit fields.
