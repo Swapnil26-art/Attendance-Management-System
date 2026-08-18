@@ -104,6 +104,55 @@ const seed = async () => {
     );
     console.log('✅ Admin user seeded (username: admin, password: admin123)');
 
+    // Seed sample employees
+    const employees = [
+      ['EMP001', 'Om Prakash', 'om@company.com', '9000010001', 1, 'Software Engineer', 'Active'],
+      ['EMP002', 'Priya Sharma', 'priya@company.com', '9000010002', 2, 'Marketing Specialist', 'Active'],
+      ['EMP003', 'Rahul Verma', 'rahul@company.com', '9000010003', 3, 'HR Executive', 'Active'],
+      ['EMP004', 'Sita Reddy', 'sita@company.com', '9000010004', 4, 'Accountant', 'Active'],
+      ['EMP005', 'Arjun Nair', 'arjun@company.com', '9000010005', 5, 'Operations Manager', 'Active'],
+      ['EMP006', 'Neha Gupta', 'neha@company.com', '9000010006', 6, 'Sales Executive', 'Active'],
+      ['EMP007', 'Vikram Singh', 'vikram@company.com', '9000010007', 1, 'QA Engineer', 'Active'],
+      ['EMP008', 'Ananya Iyer', 'ananya@company.com', '9000010008', 2, 'Content Writer', 'Inactive'],
+      ['EMP009', 'Rohan Das', 'rohan@company.com', '9000010009', 1, 'DevOps Engineer', 'Active'],
+      ['EMP010', 'Kavya Menon', 'kavya@company.com', '9000010010', 4, 'Financial Analyst', 'Active'],
+      ['EMP011', 'Manoj Kumar', 'manoj@company.com', '9000010011', 5, 'Logistics Coordinator', 'Active'],
+      ['EMP012', 'Deepika Rao', 'deepika@company.com', '9000010012', 3, 'Recruiter', 'Active']
+    ];
+    const employeeInsert = `INSERT IGNORE INTO employees
+      (employee_id, name, email, mobile, department_id, designation, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    for (const emp of employees) {
+      await connection.query(employeeInsert, emp);
+    }
+    console.log(`✅ ${employees.length} sample employees seeded`);
+
+    // Seed attendance for active employees (last 14 days)
+    const [activeRows] = await connection.query(
+      "SELECT id FROM employees WHERE status = 'Active'"
+    );
+    const statusSequence = ['Present', 'Present', 'Present', 'Present', 'Present', 'Late', 'Absent', 'Half-Day'];
+    let attendanceCount = 0;
+    for (const emp of activeRows) {
+      for (let daysAgo = 13; daysAgo >= 0; daysAgo--) {
+        const date = new Date();
+        date.setDate(date.getDate() - daysAgo);
+        const dateStr = date.toISOString().split('T')[0];
+        const idx = (emp.id + daysAgo) % statusSequence.length;
+        const st = statusSequence[idx];
+        const checkIn = st === 'Absent' ? null : `09:0${idx % 10}:00`;
+        const checkOut = st === 'Absent' ? null : '18:00:00';
+        const result = await connection.query(
+          `INSERT IGNORE INTO attendance
+            (employee_id, attendance_date, check_in_time, check_out_time, status)
+           VALUES (?, ?, ?, ?, ?)`,
+          [emp.id, dateStr, checkIn, checkOut, st]
+        );
+        attendanceCount += result[0].affectedRows;
+      }
+    }
+    console.log(`✅ ${attendanceCount} attendance records seeded`);
+
     console.log('\n🎉 Database seeded successfully!');
   } catch (error) {
     console.error('❌ Seed failed:', error.message);
