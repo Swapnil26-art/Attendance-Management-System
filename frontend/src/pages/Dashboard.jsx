@@ -65,7 +65,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="card p-5">
           <h3 className="mb-4 text-base font-semibold text-gray-800">
-            Employees by Department
+            By Departments
           </h3>
           {deptData.length === 0 ? (
             <EmptyState title="No departments yet" />
